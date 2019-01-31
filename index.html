@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1.0, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <link rel="stylesheet" href="./addressPlugin.css">
+</head>
+<style>
+  body {
+    padding: 0;
+    margin: 0;
+  }
+</style>
+<script src="./jquery.min.js"></script>
+<script src="./addressPlugin.js"></script>
+<body>
+  <button id='btn' style="width: 100%; height: 30px;">点击</button>
+  <address-plugin id="addressPlugin"></address-plugin> 
+</body>
+<script>
+  addrDatas = [{
+    "provinceId": '100100',
+    "provinceName": '北京',
+    "city": [{
+      "cityId": '100101',
+      "cityName": '北京市',
+      "zoon": []
+    }]
+  },{
+    "provinceId": '200200',
+    "provinceName": '上海',
+    "city": [{
+      "cityId": '200201',
+      "cityName": '上海市',
+      "zoon": []
+    }]
+  },{
+    "provinceId": '300300',
+    "provinceName": '安徽',
+    "city": [{
+      "cityId": '300301',
+      "cityName": '合肥市',
+      "zoon": [{
+        "zoonId": '300311',
+        "zoonName": '蜀山区'
+      }, {
+        "zoonId": '300312',
+        "zoonName": '肥西区'
+      }]
+    }, {
+      "cityId": '300302',
+      "cityName": '马鞍山市',
+      "zoon": [{
+        "zoonId": '300321',
+        "zoonName": '蜀山区'
+      }, {
+        "zoonId": '300322',
+        "zoonName": '肥西区'
+      }]
+    }]
+  },{
+    "provinceId": '200200',
+    "provinceName": '上海',
+    "city": [{
+      "cityId": '200201',
+      "cityName": '上海市',
+      "zoon": []
+    }]
+  },{
+    "provinceId": '200200',
+    "provinceName": '上海',
+    "city": [{
+      "cityId": '200201',
+      "cityName": '上海市',
+      "zoon": []
+    }]
+  },{
+    "provinceId": '200200',
+    "provinceName": '上海',
+    "city": [{
+      "cityId": '200201',
+      "cityName": '上海市',
+      "zoon": []
+    }]
+  },{
+    "provinceId": '200200',
+    "provinceName": '上海',
+    "city": [{
+      "cityId": '200201',
+      "cityName": '上海市',
+      "zoon": []
+    }]
+  },{
+    "provinceId": '200200',
+    "provinceName": '上海',
+    "city": [{
+      "cityId": '200201',
+      "cityName": '上海市',
+      "zoon": []
+    }]
+  },{
+    "provinceId": '200200',
+    "provinceName": '上海',
+    "city": [{
+      "cityId": '200201',
+      "cityName": '上海市',
+      "zoon": []
+    }]
+  },{
+    "provinceId": '200200',
+    "provinceName": '上海',
+    "city": [{
+      "cityId": '200201',
+      "cityName": '上海市',
+      "zoon": []
+    }]
+  },{
+    "provinceId": '200200',
+    "provinceName": '上海',
+    "city": [{
+      "cityId": '200201',
+      "cityName": '上海市',
+      "zoon": []
+    }]
+  },{
+    "provinceId": '200200',
+    "provinceName": '上海',
+    "city": [{
+      "cityId": '200201',
+      "cityName": '上海市',
+      "zoon": []
+    }]
+  },{
+    "provinceId": '200200',
+    "provinceName": '上海',
+    "city": [{
+      "cityId": '200201',
+      "cityName": '上海市',
+      "zoon": []
+    }]
+  },{
+    "provinceId": '200200',
+    "provinceName": '上海',
+    "city": [{
+      "cityId": '200201',
+      "cityName": '上海市',
+      "zoon": []
+    }]
+  },{
+    "provinceId": '200200',
+    "provinceName": '上海',
+    "city": [{
+      "cityId": '200201',
+      "cityName": '上海市',
+      "zoon": []
+    }]
+  },{
+    "provinceId": '400200',
+    "provinceName": '南海',
+    "city": [{
+      "cityId": '400201',
+      "cityName": '上海市',
+      "zoon": []
+    }]
+  }];
+  address_Plugin = $('#addressPlugin').addressPlugin({
+    datas: addrDatas,  // 数据源
+    title: '出生地',
+    titlePos: 'left',  // title的显示位置
+    callback: function (result) {
+      console.log(result)
+    }
+  })
+
+  $('#btn').on('click', function () {
+    console.log('click')
+    address_Plugin.openModule()
+  })
+</script>
+</html>
