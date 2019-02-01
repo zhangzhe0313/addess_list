@@ -30,6 +30,13 @@
     this.zoonList = [];
     this.zoonObj = {};
 
+    // 最终省市县结果
+    this.finalProvince = {};
+    this.finalCity = {};
+    this.finalZoon = {};
+    this.finalCityList = [];
+    this.finalZoonList = [];
+
 
     if (this.legth == 0) {
       return;
@@ -42,6 +49,8 @@
       $('#addressModule').css('display', 'block');
       $('#addressList').removeClass('ap-pop-out');
       $('#addressList').addClass('ap-pop-in');
+
+      this.resetChoosedInfo();
     }
   }
 
@@ -77,8 +86,99 @@
       
       _that.el.html(container);
 
-      _that.rePaintDom(_that.opts.datas, 'province', $('#apPCZList'));
+      _that.rePaintDom(_that.opts.datas, 'province');
       _that.changeActivePos($('#apChooseProvince'));
+    },
+
+    changeTitleInfo: function (kind, provinceObj, cityObj, zoonObj) {
+      if (!kind) {
+        return;
+      }
+      var _isProvince = false,
+          _isCity = false,
+          _isZoon = false;
+
+      switch(kind) {
+        case 'province':
+          _isProvince = true;
+          break;
+        case 'city': 
+          _isCity = true;
+          _isProvince = true;
+          break;
+        case 'zoon':
+          _isZoon = true;
+          _isCity = true;
+          _isProvince = true;
+          break;
+      }
+
+      if (_isProvince) {
+        provinceObj.text(this.finalProvince.provinceName);
+        provinceObj.attr('data-province', this.finalProvince.provinceId);
+      }
+      if (_isCity) {
+        cityObj.text(this.finalCity.cityName);
+        cityObj.attr('data-city', this.finalCity.cityId);
+      }
+      if (_isZoon) {
+        zoonObj.text(this.finalZoon.zoonName);
+        zoonObj.attr('data-zoon', this.finalZoon.zoonId);
+      }
+    },
+
+    // 还原title信息
+    resetChoosedInfo: function () {
+      var _apChooseProvince = $('#apChooseProvince'),
+          _apChooseCity = $('#apChooseCity'),
+          _apChooseZoon = $('#apChooseZoon');
+
+      // 判断是否存在区县
+      if (!$.isEmptyObject(this.finalZoon)) {
+        _apChooseProvince.removeClass('ap-none');
+        _apChooseCity.removeClass('ap-none');
+        _apChooseZoon.removeClass('ap-none');
+
+        this.changeTitleInfo('zoon', _apChooseProvince, _apChooseCity, _apChooseZoon);
+
+        
+        this.rePaintDom(this.finalZoonList, 'zoon');
+        this.setCurrentItem(this.finalZoonList, 'zoon', _apChooseZoon, this.finalZoon.zoonId);
+      } else {
+        _apChooseZoon.addClass('ap-none');
+
+        // 判断是否存在市
+        if (!$.isEmptyObject(this.finalCity)) {
+          _apChooseCity.removeClass('ap-none');
+          _apChooseProvince.removeClass('ap-none');
+
+          this.changeTitleInfo('city', _apChooseProvince, _apChooseCity, _apChooseZoon);
+
+          this.rePaintDom(this.finalCityList, 'city');
+
+          this.setCurrentItem(this.finalCityList, 'city', _apChooseCity, this.finalCity.cityId);
+        } else {
+          _apChooseCity.addClass('ap-none');
+
+          // 判断是否存在省
+          if (!$.isEmptyObject(this.finalProvince)) {
+            _apChooseProvince.removeClass('ap-none');
+
+            this.changeTitleInfo('province', _apChooseProvince, _apChooseCity, _apChooseZoon);
+
+            this.rePaintDom(this.opts.datas, 'province');
+            this.setCurrentItem(this.opts.datas, 'province', _apChooseProvince, this.finalProvince.provinceId);
+          }
+        }
+      }
+    },
+
+    rebackPCZObj: function () {
+      this.provinceObj = this.finalProvince;
+      this.cityObj = this.finalCity;
+      this.zoonObj = this.finalZoon;
+      this.cityList = this.finalCityList;
+      this.zoonList = this.finalZoonList;
     },
 
     closeModule: function () {
@@ -87,8 +187,8 @@
       setTimeout(function () {
           $('#addressModule').css('display', 'none');
         }, ANIMATION_OUT);
-      // 还原原始状态
 
+      this.rebackPCZObj();
     },
 
     // 列表项状态还原
@@ -131,17 +231,18 @@
     },
 
     // 绘制城市列表
-    rePaintDom: function (list, kind, container) {
-      if (!list || list.length == 0 || !kind || !container) {
+    rePaintDom: function (list, kind) {
+      if (!list || list.length == 0 || !kind) {
         return;
       }
+      
+      var htmlContent = '',
+          container = $('#apPCZList');
 
       // 清除所选节点下的所有元素
       container.empty();
       // 还原title状态
       this.setTitleStatusOrigin();
-
-      var htmlContent = '';
 
       switch(kind) {
         case 'province':
@@ -218,7 +319,7 @@
         return;
       }
       // 重绘当前列表
-      this.rePaintDom(list, kind, $('#apPCZList'));
+      this.rePaintDom(list, kind);
       // 改变激活状态
       this.changeActivePos(curObj);
     },
@@ -237,9 +338,9 @@
 
     // 返回选择结果
     returnChooseAddress: function () {
-      var _pname = this.provinceObj && this.provinceObj.provinceName,
-          _cname = this.cityObj && this.cityObj.cityName,
-          _zname = this.zoonObj && this.zoonObj.zoonName,
+      var _pname = this.finalProvince && this.finalProvince.provinceName,
+          _cname = this.finalCity && this.finalCity.cityName,
+          _zname = this.finalZoon && this.finalZoon.zoonName,
           composeName = '';
       
       if (_pname) {
@@ -254,6 +355,15 @@
       return composeName;
     },
 
+    // 设置当前项
+    setCurrentItem: function (list, kind, titleObj, id) {
+      if (!list || list.length == 0 || !kind || titleObj.length == 0 || !id) {
+         return;
+      }
+      this.refreshCurrentView(list, kind, titleObj);
+      this.chooseApItem(id, list.length);
+    },
+
     // 省列表项事件处理
     handlerProvinceItem: function () {
       var _that = this,
@@ -262,6 +372,7 @@
           _apChooseZoon = $('#apChooseZoon');
       $('.ap-pcz-iteminner').on('click', function (event) {
         _that.handlePCZItemCommEvent($(this), _apChooseProvince, 'province', _that.opts.datas);
+
         // 设置title区域对应的id
         _apChooseProvince.attr('data-province',  _that.provinceObj.provinceId);
         // 获取对应的省下的市
@@ -271,12 +382,19 @@
           _that.cityObj = {};
           _that.zoonObj = {};
 
+        // 保存省市县
+        _that.finalProvince = _that.provinceObj;
+        _that.finalCity = {};
+        _that.finalZoon = {};
+        _that.finalCityList = [];
+        _that.finalZoonList = [];
+
           _apChooseProvince.addClass('apitem-active').addClass('ap-box-shaw');
           _that.opts.callback && _that.opts.callback(_that.returnChooseAddress());
           _that.closeModule();
         } else {
           // 重绘市列表
-          _that.rePaintDom(_that.cityList, 'city', $('#apPCZList'));
+          _that.rePaintDom(_that.cityList, 'city');
           _apChooseCity.removeClass('ap-none').addClass('ap-box-shaw');
           // 隐藏县
           _that.showOrHideTitle(_apChooseZoon, false);
@@ -294,9 +412,8 @@
         if (!dataProvince || _apChooseProvince.hasClass('apitem-active')) {
           return;
         }
-        
-        _that.refreshCurrentView(_that.opts.datas, 'province', _apChooseProvince);
-        _that.chooseApItem(_apChooseProvince.attr('data-province'), _that.legth);
+
+        _that.setCurrentItem(_that.opts.datas, 'province', _apChooseProvince, dataProvince);
       });
     },
 
@@ -307,20 +424,27 @@
           _apChooseZoon = $('#apChooseZoon');
       $('.ap-pcz-iteminner').on('click', function (event) {
         _that.handlePCZItemCommEvent($(this), _apChooseCity, 'city', _that.cityList);
+
         // 设置title区域对应的id
         _apChooseCity.attr('data-city',  _that.cityObj.cityId);
         // 获取对应的区县列表
         _that.zoonList = _that.cityObj.zoon;
         if (_that.zoonList.length == 0) {
+          // 保存省市县
+          _that.finalProvince = _that.provinceObj;
+          _that.finalCity = _that.cityObj;
+          _that.finalZoon = {};
+          _that.finalCityList = _that.cityList;
+          _that.finalZoonList = [];
+
           // 清空县区缓存
           _that.zoonObj = {};
-
           _apChooseCity.addClass('apitem-active').addClass('ap-box-shaw');
           _that.opts.callback && _that.opts.callback(_that.returnChooseAddress());
           _that.closeModule();
         } else {
           // 重绘区县列表
-          _that.rePaintDom(_that.zoonList, 'zoon', $('#apPCZList'));
+          _that.rePaintDom(_that.zoonList, 'zoon');
           _apChooseZoon.removeClass('ap-none').addClass('ap-box-shaw');
           // 重置市title
           _apChooseZoon.text('请选择');
@@ -336,8 +460,7 @@
           return;
         }
 
-        _that.refreshCurrentView(_that.cityList, 'city', apChooseCity);
-        _that.chooseApItem(apChooseCity.attr('data-city'), _that.cityList.length);
+        _that.setCurrentItem(_that.cityList, 'city', apChooseCity, dataCity);
       });
     },
 
@@ -350,6 +473,14 @@
         _apChooseZoon.addClass('apitem-active').addClass('ap-box-shaw');
         // 设置title区域对应的id
         _apChooseZoon.attr('data-zoon',  _that.zoonObj.zoonId);
+        
+         // 保存省市县
+         _that.finalProvince = _that.provinceObj;
+         _that.finalCity = _that.cityObj;
+         _that.finalZoon = _that.zoonObj;
+         _that.finalCityList = _that.cityList;
+         _that.finalZoonList = _that.zoonList;
+
         _that.opts.callback && _that.opts.callback(_that.returnChooseAddress());
         _that.closeModule();
       });
@@ -358,9 +489,8 @@
       var apChooseZoon = $('#apChooseZoon');
       apChooseZoon.on('click', function () {
         // 重绘区县列表项
-        _that.refreshCurrentView(_that.zoonList, 'zoon', apChooseZoon);
         // 当区县不是初始状态-请选择时，点击区县，下方列表需勾选相应项，并在可视区显示
-        _that.chooseApItem(apChooseZoon.attr('data-zoon'), _that.zoonList.length);
+        _that.setCurrentItem(_that.zoonList, 'zoon', apChooseZoon, apChooseZoon.attr('data-zoon'));
       });
     },
 
@@ -373,7 +503,6 @@
           _itemIndex = _targetContaier.index() + 1;
           _targetContaier.children().eq(0).addClass('apitem-active');
           _targetContaier.children().eq(1).removeClass('ap-unvisible');
-
 
       // 当列表项数目大于页面允许显示的数目时，允许滚动
       if  (listSize > MAX_SHOW_ITEMNUM) {
@@ -392,15 +521,13 @@
             $('#apPCZList').scrollTop( MAX_SHOW_ITEMNUM * ITEM_HEIGHT);
           }
         }
-
-        
       }
     },
 
     handleEvent: function () {
       var _that = this;
 
-      // 确定
+      // 关闭
       $('#apCLose').on('click', function () {
         _that.closeModule();
       })
