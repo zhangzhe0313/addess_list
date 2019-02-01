@@ -364,6 +364,15 @@
       this.chooseApItem(id, list.length);
     },
 
+    setPCZData: function (province, city, zoon, cityList, zoonList) {
+      // 保存省市县
+      this.finalProvince = province || {};
+      this.finalCity = city || {};
+      this.finalZoon = zoon || {};
+      this.finalCityList = cityList || [];
+      this.finalZoonList = zoonList || [];
+    },
+
     // 省列表项事件处理
     handlerProvinceItem: function () {
       var _that = this,
@@ -383,11 +392,7 @@
           _that.zoonObj = {};
 
         // 保存省市县
-        _that.finalProvince = _that.provinceObj;
-        _that.finalCity = {};
-        _that.finalZoon = {};
-        _that.finalCityList = [];
-        _that.finalZoonList = [];
+        _that.setPCZData(_that.provinceObj, {}, {}, [], []);
 
           _apChooseProvince.addClass('apitem-active').addClass('ap-box-shaw');
           _that.opts.callback && _that.opts.callback(_that.returnChooseAddress());
@@ -431,11 +436,7 @@
         _that.zoonList = _that.cityObj.zoon;
         if (_that.zoonList.length == 0) {
           // 保存省市县
-          _that.finalProvince = _that.provinceObj;
-          _that.finalCity = _that.cityObj;
-          _that.finalZoon = {};
-          _that.finalCityList = _that.cityList;
-          _that.finalZoonList = [];
+          _that.setPCZData(_that.provinceObj, _that.cityObj, {}, _that.cityList, []);
 
           // 清空县区缓存
           _that.zoonObj = {};
@@ -474,12 +475,8 @@
         // 设置title区域对应的id
         _apChooseZoon.attr('data-zoon',  _that.zoonObj.zoonId);
         
-         // 保存省市县
-         _that.finalProvince = _that.provinceObj;
-         _that.finalCity = _that.cityObj;
-         _that.finalZoon = _that.zoonObj;
-         _that.finalCityList = _that.cityList;
-         _that.finalZoonList = _that.zoonList;
+        // 保存省市县
+        _that.setPCZData(_that.provinceObj, _that.cityObj, _that.zoonObj, _that.cityList, _that.zoonList);
 
         _that.opts.callback && _that.opts.callback(_that.returnChooseAddress());
         _that.closeModule();
