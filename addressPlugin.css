@@ -135,9 +135,9 @@
 .ap-title-wrap {
   position: relative;
   height: 2.5rem;
-  text-align: center;
   font-size: .875rem;
   font-weight: 700;
+  text-align: center;
 }
 
 .ap-title-content {

@@ -14,7 +14,6 @@
     this.opts = {
       datas: options.datas || [],
       title: options.title || '请选择',
-      titlePos: options.titlePos || 'center',
       callback: options.callback || undefined
     };
 
