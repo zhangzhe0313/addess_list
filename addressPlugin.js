@@ -296,7 +296,7 @@
         }
         
         _that.refreshCurrentView(_that.opts.datas, 'province', _apChooseProvince);
-        _that.chooseApItem(_apChooseProvince.attr('data-province'));
+        _that.chooseApItem(_apChooseProvince.attr('data-province'), _that.legth);
       });
     },
 
@@ -337,7 +337,7 @@
         }
 
         _that.refreshCurrentView(_that.cityList, 'city', apChooseCity);
-        _that.chooseApItem(apChooseCity.attr('data-city'));
+        _that.chooseApItem(apChooseCity.attr('data-city'), _that.cityList.length);
       });
     },
 
@@ -360,23 +360,40 @@
         // 重绘区县列表项
         _that.refreshCurrentView(_that.zoonList, 'zoon', apChooseZoon);
         // 当区县不是初始状态-请选择时，点击区县，下方列表需勾选相应项，并在可视区显示
-        _that.chooseApItem(apChooseZoon.attr('data-zoon'));
+        _that.chooseApItem(apChooseZoon.attr('data-zoon'), _that.zoonList.length);
       });
     },
 
     // 根据title的内容，下方列表需勾选相应项，并在可视区显示
-    chooseApItem: function (id) {
+    chooseApItem: function (id, listSize) {
       if (!id || id == '000000') {
         return;
       }
       var _targetContaier = $('[data-pczid='+ id +']'),
-          _itemIndex = _targetContaier.index();
+          _itemIndex = _targetContaier.index() + 1;
           _targetContaier.children().eq(0).addClass('apitem-active');
           _targetContaier.children().eq(1).removeClass('ap-unvisible');
 
 
-      if (_itemIndex > 9) {
-        $('#apPCZList').scrollTop((_itemIndex - MAX_SHOW_ITEMNUM + 1) * ITEM_HEIGHT);
+      // 当列表项数目大于页面允许显示的数目时，允许滚动
+      if  (listSize > MAX_SHOW_ITEMNUM) {
+        if (_itemIndex < MAX_SHOW_ITEMNUM) {
+          if (_itemIndex <= listSize - MAX_SHOW_ITEMNUM) {
+            $('#apPCZList').scrollTop( (_itemIndex-1) * ITEM_HEIGHT);
+          } else {
+            $('#apPCZList').scrollTop((listSize - MAX_SHOW_ITEMNUM) * ITEM_HEIGHT);
+          }
+        } else {
+          if (listSize - _itemIndex > MAX_SHOW_ITEMNUM -1) {
+            // 当出现列表数大于2*MAX_SHOW_ITEMNUM时
+            $('#apPCZList').scrollTop(MAX_SHOW_ITEMNUM * parseInt(listSize / MAX_SHOW_ITEMNUM) * ITEM_HEIGHT);
+          } else {
+            // MAX_SHOW_ITEMNUM <当出现列表数 < 2*MAX_SHOW_ITEMNUM时
+            $('#apPCZList').scrollTop( MAX_SHOW_ITEMNUM * ITEM_HEIGHT);
+          }
+        }
+
+        
       }
     },
 
