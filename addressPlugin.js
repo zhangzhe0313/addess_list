@@ -426,15 +426,13 @@
       });
 
       // title点击显示当前省下的所有市
-      _that.titleOnClick(_that.apProvinceTitleObj, _that.opts.datas, 'province');
+      _that.apProvinceTitleObj.on('click', function () {
+        if (_that.apProvinceTitleObj.hasClass('apitem-active')) {
+          return;
+        }
 
-      // _that.apProvinceTitleObj.on('click', function () {
-      //   if (_that.apProvinceTitleObj.hasClass('apitem-active')) {
-      //     return;
-      //   }
-
-      //   _that.setCurrentItem(_that.opts.datas, 'province', _that.apProvinceTitleObj, _that.apProvinceTitleObj.attr('data-province'));
-      // });
+        _that.setCurrentItem(_that.opts.datas, 'province', _that.apProvinceTitleObj, _that.apProvinceTitleObj.attr('data-province'));
+      });
     },
 
     // 市列表项事件处理
@@ -467,14 +465,13 @@
       });
 
       // title点击显示当前省下的所有市
-      _that.titleOnClick(_that.apCityTitleObj, _that.cityList, 'city');
-      // _that.apCityTitleObj.on('click', function () {
-      //   if (_that.apCityTitleObj.hasClass('apitem-active')) {
-      //     return;
-      //   }
+      _that.apCityTitleObj.on('click', function () {
+        if (_that.apCityTitleObj.hasClass('apitem-active')) {
+          return;
+        }
 
-      //   _that.setCurrentItem(_that.cityList, 'city', _that.apCityTitleObj, _that.apCityTitleObj.attr('data-city'));
-      // });
+        _that.setCurrentItem(_that.cityList, 'city', _that.apCityTitleObj, _that.apCityTitleObj.attr('data-city'));
+      });
     },
 
     // 处理县区列表项事件
@@ -494,35 +491,15 @@
       });
 
       // title点击显示当前省下的所有市
-      _that.titleOnClick(_that.apZoonTitleObj, _that.zoonList, 'zoon');
-    },
-
-    titleOnClick: function (titleObj, list, kind) {
-      if (!titleObj || titleObj.length == 0 || !list || list.length == 0 || !kind) {
-        return;
-      }
-      var dataAttr = '',
-          _that = this;
-      switch (kind) {
-        case 'province':
-          dataAttr = 'data-province';
-          break;
-        case 'city': 
-          dataAttr = 'data-city';
-          break;
-        case 'zoon':
-          dataAttr = 'data-zoon';
-          break;
-      }
-      titleObj.on('click', function () {
-        if (titleObj.hasClass('apitem-active')) {
+      _that.apZoonTitleObj.on('click', function () {
+        if (_that.apZoonTitleObj.hasClass('apitem-active')) {
           return;
         }
         // 重绘区县列表项
         // 当区县不是初始状态-请选择时，点击区县，下方列表需勾选相应项，并在可视区显示
-        _that.setCurrentItem(list, kind, titleObj, titleObj.attr(dataAttr));
+        _that.setCurrentItem(_that.zoonList, 'zoon', _that.apZoonTitleObj, _that.apZoonTitleObj.attr('data-zoon'));
       });
-    }, 
+    },
 
     // 根据title的内容，下方列表需勾选相应项，并在可视区显示
     chooseApItem: function (id, listSize) {
