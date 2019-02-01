@@ -23,26 +23,27 @@
     }
 
     // 省列表, 省对象缓存
-    this.provinceList = [];
-    this.provinceObj = {};
+    provinceList = [];
+    provinceObj = {};
     // 市列表, 市对象缓存
-    this.cityList = [];
-    this.cityObj = {};
+    cityList = [];
+    cityObj = {};
     // 区/县列表缓存
-    this.zoonList = [];
-    this.zoonObj = {};
+    zoonList = [];
+    zoonObj = {};
 
     // 最终省市县结果
-    this.finalProvince = {};
-    this.finalCity = {};
-    this.finalZoon = {};
-    this.finalCityList = [];
-    this.finalZoonList = [];
+    finalProvince = {};
+    // this.finalProvince = {};
+    finalCity = {};
+    finalZoon = {};
+    finalCityList = [];
+    finalZoonList = [];
 
-    this.apProvinceTitleObj = null;
-    this.apCityTitleObj = null;
-    this.apZoonTitleObj = null;
-    this.apPCZListObj = null;
+    apProvinceTitleObj = null;
+    apCityTitleObj = null;
+    apZoonTitleObj = null;
+    apPCZListObj = null;
 
     this.init();
 
