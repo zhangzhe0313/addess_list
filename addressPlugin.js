@@ -23,7 +23,6 @@
     }
 
     // 省列表, 省对象缓存
-    provinceList = [];
     provinceObj = {};
     // 市列表, 市对象缓存
     cityList = [];
@@ -34,7 +33,6 @@
 
     // 最终省市县结果
     finalProvince = {};
-    // this.finalProvince = {};
     finalCity = {};
     finalZoon = {};
     finalCityList = [];
@@ -47,14 +45,12 @@
 
     this.init();
 
-    // 对外暴露
     this.openModule = function () {
       $('#addressModule').css('display', 'block');
-      $('#addressList').removeClass('ap-pop-out');
-      $('#addressList').addClass('ap-pop-in');
+      $('#addressList').removeClass('ap-pop-out').addClass('ap-pop-in');
 
       this.resetChoosedInfo();
-    }
+    };
   }
 
   AddressPlugin.prototype = {
@@ -148,7 +144,6 @@
         this.apZoonTitleObj.removeClass('ap-none');
 
         this.changeTitleInfo('zoon', this.apProvinceTitleObj, this.apCityTitleObj, this.apZoonTitleObj);
-
         
         this.rePaintDom(this.finalZoonList, 'zoon');
         this.setCurrentItem(this.finalZoonList, 'zoon', this.apZoonTitleObj, this.finalZoon.zoonId);

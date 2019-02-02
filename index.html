@@ -12,11 +12,30 @@
     padding: 0;
     margin: 0;
   }
+  .div-address{
+    width: 100%;
+    height: 30px;
+    background-color: #f1f2f3;
+    line-height: 30px;
+    text-align: center;
+    border: none;
+  }
+
+  .div-back{
+    width: 100%;
+    height: 30px;
+    margin-top: 20px;
+    background-color: #f1f2f3;
+    line-height: 30px;
+    text-align: center;
+  }
 </style>
 <script src="./jquery.min.js"></script>
 <script src="./addressPlugin.js"></script>
 <body>
-  <button id='btn' style="width: 100%; height: 30px;">点击</button>
+  <input id='address' class="div-address" placeholder="请选择省市县" readonly></input>
+  <!-- 模拟撤销操作 -->
+  <div id="changeText" class="div-back">返回</div>
   <address-plugin id="addressPlugin"></address-plugin> 
 </body>
 <script>
@@ -251,13 +270,18 @@
     datas: addrDatas,  // 数据源
     title: '出生地',
     callback: function (result) {
-      console.log(result)
+      $('#address').val(result)
     }
   })
 
-  $('#btn').on('click', function () {
-    console.log('click')
+  $('#address').on('click', function () {
+    adress = $('#address').val();
+    adressArry = adress.split('-');
     address_Plugin.openModule()
+  })
+
+  $('#changeText').on('click', function() {
+    $('#address').val('')
   })
 </script>
 </html>
