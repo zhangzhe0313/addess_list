@@ -45,11 +45,24 @@
 
     this.init();
 
-    this.openModule = function () {
+    this.openModule = function (addr) {
+      console.log(addr);
+
       $('#addressModule').css('display', 'block');
       $('#addressList').removeClass('ap-pop-out').addClass('ap-pop-in');
 
-      this.resetChoosedInfo();
+      if (!addr) {
+        this.refreshCurrentView(this.opts.datas, 'province', this.apProvinceTitleObj);
+        this.apProvinceTitleObj.text('请选择');
+        this.apCityTitleObj.addClass('ap-none');
+        this.apZoonTitleObj.addClass('ap-none');
+        this.apPCZListObj.scrollTop(0);
+      } else {
+        if (addr != this.returnChooseAddress().name) {
+          var addrArr = addr.split('-');
+          this.resetChoosedInfo(addrArr);
+        }
+      }
     };
   }
 
@@ -87,8 +100,10 @@
 
       _that.initTitleAndListObj();
 
-      _that.rePaintDom(_that.opts.datas, 'province');
-      _that.changeActivePos(_that.apProvinceTitleObj);
+      _that.refreshCurrentView(_that.opts.datas, 'province', _that.apProvinceTitleObj);
+
+      // _that.rePaintDom(_that.opts.datas, 'province');
+      // _that.changeActivePos(_that.apProvinceTitleObj);
     },
 
     initTitleAndListObj: function () {
@@ -135,8 +150,42 @@
       }
     },
 
+    setFinalPCZInfo: function (arr) {
+      if (!arr || arr.length == 0) {
+        return;
+      }
+      for (var i = 0; i < this.opts.datas.length; i++) {
+        if (this.opts.datas[i].provinceName == arr[0]) {
+          this.finalProvince = this.opts.datas[i];
+          break;
+        }
+      }
+      if (arr.length == 2) {
+        this.finalCityList = this.finalProvince.city;
+        this.cityList = this.finalCityList;
+        for (var c = 0; c < this.finalCityList.length; c ++) {
+          if (this.finalCityList[c].cityName == arr[1]) {
+            this.finalCity = this.finalCityList[c];
+            break;
+          }
+        }
+      }
+      if (arr.length == 3) {
+        this.finalZoonList = this.finalCity.zoon;
+        this.zoonList = this.finalZoonList;
+        for (var z = 0; z < this.finalZoonList.length; z ++) {
+          if (this.finalZoonList[z].zoonName == arr[2]) {
+            this.finalZoon = this.finalZoonList[z];
+            break;
+          }
+        }
+      }
+    },
+
     // 还原title信息
-    resetChoosedInfo: function () {
+    resetChoosedInfo: function (arr) {
+      this.setFinalPCZInfo(arr);
+
       // 判断是否存在区县
       if (!$.isEmptyObject(this.finalZoon)) {
         this.apProvinceTitleObj.removeClass('ap-none');
@@ -351,20 +400,30 @@
     // 返回选择结果
     returnChooseAddress: function () {
       var _pname = this.finalProvince && this.finalProvince.provinceName,
+          _pid = this.finalProvince && this.finalProvince.provinceId,
           _cname = this.finalCity && this.finalCity.cityName,
+          _cid = this.finalCity && this.finalCity.cityId,
           _zname = this.finalZoon && this.finalZoon.zoonName,
-          composeName = '';
+          _zid = this.finalZoon && this.finalZoon.zoonId,
+          composeName = '',
+          composeId = '';
       
       if (_pname) {
         composeName += _pname;
+        composeId += _pid;
       }
       if (_cname) {
         composeName += ('-' + _cname);
+        composeId += ('-' + _cid);
       }
       if (_zname) {
         composeName += ('-' + _zname);
+        composeId += ('-' + _zid);
       }
-      return composeName;
+      return {
+        name: composeName,
+        id: composeId
+      };
     },
 
     // 设置当前项

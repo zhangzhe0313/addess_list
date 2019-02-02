@@ -33,7 +33,7 @@
 <script src="./jquery.min.js"></script>
 <script src="./addressPlugin.js"></script>
 <body>
-  <input id='address' class="div-address" placeholder="请选择省市县" readonly></input>
+  <input id='address' class="div-address" placeholder="请选择省市县" readonly value="上海-上海市5"></input>
   <!-- 模拟撤销操作 -->
   <div id="changeText" class="div-back">返回</div>
   <address-plugin id="addressPlugin"></address-plugin> 
@@ -270,14 +270,12 @@
     datas: addrDatas,  // 数据源
     title: '出生地',
     callback: function (result) {
-      $('#address').val(result)
+      $('#address').val(result.name)
     }
   })
 
   $('#address').on('click', function () {
-    adress = $('#address').val();
-    adressArry = adress.split('-');
-    address_Plugin.openModule()
+    address_Plugin.openModule($('#address').val())
   })
 
   $('#changeText').on('click', function() {
