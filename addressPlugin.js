@@ -59,10 +59,8 @@
         this.apZoonTitleObj.addClass('ap-none');
         this.apPCZListObj.scrollTop(0);
       } else {
-        if (addr != this.returnChooseAddress().name) {
-          var addrArr = addr.split('-');
-          this.resetChoosedInfo(addrArr);
-        }
+        var addrArr = addr.split('-');
+        this.resetChoosedInfo(addrArr);
       }
     };
   }
@@ -162,6 +160,7 @@
       for (var i = 0; i < this.opts.datas.length; i++) {
         if (this.opts.datas[i].provinceName == arr[0]) {
           this.finalProvince = this.opts.datas[i];
+          this.provinceObj = this.finalProvince;
           break;
         }
       }
@@ -171,6 +170,7 @@
         for (var c = 0; c < this.finalCityList.length; c ++) {
           if (this.finalCityList[c].cityName == arr[1]) {
             this.finalCity = this.finalCityList[c];
+            this.cityObj = this.finalCity;
             break;
           }
         }
@@ -181,6 +181,7 @@
         for (var z = 0; z < this.finalZoonList.length; z ++) {
           if (this.finalZoonList[z].zoonName == arr[2]) {
             this.finalZoon = this.finalZoonList[z];
+            this.zoonObj = this.finalZoon;
             break;
           }
         }
