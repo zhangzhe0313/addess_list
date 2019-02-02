@@ -14,6 +14,7 @@
     this.opts = {
       datas: options.datas || [],
       title: options.title || '请选择',
+      titlePos: options.titlePos || 'center',
       callback: options.callback || undefined
     };
 
@@ -76,13 +77,20 @@
 
     drawDom: function () {
       var _that = this,
-          container = '';
+          container = '',
+          titleHtml = '';
+
+      if (_that.opts.titlePos == 'left') {
+        titleHtml = '<div class="ap-title-wrap" style="text-align: left; padding-left: .9375rem;">';
+      } else if (_that.opts.titlePos == 'center') {
+        titleHtml = '<div class="ap-title-wrap" style="text-align: ' + this.opts.titlePos + '">';
+      }
 
       // 容器
       container += '<div id="addressModule" class="ap-container">'+
                       '<div id="addressList" class="ap-addrlist">' +
                         '<div class="ap-title">' +
-                          '<div class="ap-title-wrap">' + 
+                          titleHtml +
                             '<div class="ap-title-content">' + _that.opts.title + '</div>' +
                             '<div id="apCLose" class="ap-close"></div>' +
                           '</div>' +
@@ -101,9 +109,6 @@
       _that.initTitleAndListObj();
 
       _that.refreshCurrentView(_that.opts.datas, 'province', _that.apProvinceTitleObj);
-
-      // _that.rePaintDom(_that.opts.datas, 'province');
-      // _that.changeActivePos(_that.apProvinceTitleObj);
     },
 
     initTitleAndListObj: function () {

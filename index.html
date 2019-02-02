@@ -269,7 +269,9 @@
   address_Plugin = $('#addressPlugin').addressPlugin({
     datas: addrDatas,  // 数据源
     title: '出生地',
+    // titlePos: 'left',
     callback: function (result) {
+      console.log(result);
       $('#address').val(result.name)
     }
   })
