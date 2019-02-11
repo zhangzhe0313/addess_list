@@ -602,7 +602,7 @@
   };
 
   $.fn.addressPlugin = function (options) {
-    return new AddressPlugin($(this), options)
+    return new AddressPlugin($(this), options);
   };
 
 })(jQuery, window, document);

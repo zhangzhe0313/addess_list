@@ -1,0 +1,10 @@
+node_modules/
+build/
+.npmrc
+# dist/
+.project
+localconfig.json
+.DS_Store
+gulpfile.js
+package.json
+package-lock.json
