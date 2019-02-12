@@ -5,6 +5,6 @@ build/
 .project
 localconfig.json
 .DS_Store
-gulpfile.js
+# gulpfile.js
 package.json
 package-lock.json
