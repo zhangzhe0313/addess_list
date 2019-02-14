@@ -15,6 +15,7 @@
       datas: options.datas || [],
       title: options.title || '请选择',
       titlePos: options.titlePos || 'center',
+      showColumn: options.showColumn || 3,
       callback: options.callback || undefined
     };
 
@@ -460,7 +461,7 @@
           _that.apProvinceTitleObj.attr('data-province',  _that.provinceObj.provinceId);
           // 获取对应的省下的市
           _that.cityList = _that.provinceObj.city;
-          if (_that.cityList.length == 0) {
+          if (_that.cityList.length == 0 || _that.opts.showColumn == 1) {
             // 清空市，县区缓存
             _that.cityObj = {};
             _that.zoonObj = {};
@@ -505,7 +506,7 @@
         _that.apCityTitleObj.attr('data-city',  _that.cityObj.cityId);
         // 获取对应的区县列表
         _that.zoonList = _that.cityObj.zoon;
-        if (_that.zoonList.length == 0) {
+        if (_that.zoonList.length == 0 || _that.opts.showColumn == 2) {
           // 保存省市县
           _that.setPCZData(_that.provinceObj, _that.cityObj, {}, _that.cityList, []);
 
