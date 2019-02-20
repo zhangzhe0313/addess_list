@@ -31,8 +31,8 @@
   }
 </style>
 <script src="../jquery.min.js"></script>
-<script src="../dist/addressPlugin.min.js"></script>
-<!-- <script src="../addressPlugin.js"></script> -->
+<!-- <script src="../dist/addressPlugin.min.js"></script> -->
+<script src="../addressPlugin.js"></script>
 <body>
   <input id='address' class="div-address" placeholder="请选择省市县" readonly value="上海-上海市1"></input>
   <!-- 模拟撤销操作 -->
@@ -41,6 +41,8 @@
 </body>
 <script>
   addrDatas = [{
+    "orderLetter": 'B',
+    "showOrder": true,
     "provinceId": '100100',
     "provinceName": '北京',
     "city": [{
@@ -49,6 +51,8 @@
       "zoon": []
     }]
   },{
+    "orderLetter": 'S',
+    "showOrder": true,
     "provinceId": '200200',
     "provinceName": '上海',
     "city": [{
@@ -101,6 +105,8 @@
       "zoon": []
     }]
   },{
+    "orderLetter": 'A',
+    "showOrder": true,
     "provinceId": '300300',
     "provinceName": '安徽',
     "city": [{
@@ -155,6 +161,8 @@
       }]
     }]
   },{
+    "orderLetter": 'H',
+    "showOrder": true,
     "provinceId": '400200',
     "provinceName": '黑龙江',
     "city": [{
@@ -163,6 +171,8 @@
       "zoon": []
     }]
   },{
+    "orderLetter": 'Q',
+    "showOrder": true,
     "provinceId": '500200',
     "provinceName": '青岛',
     "city": [{
@@ -171,6 +181,8 @@
       "zoon": []
     }]
   },{
+    "orderLetter": 'S',
+    "showOrder": true,
     "provinceId": '600200',
     "provinceName": '沈阳',
     "city": [{
@@ -179,6 +191,8 @@
       "zoon": []
     }]
   },{
+    "orderLetter": 'H',
+    "showOrder": false,
     "provinceId": '700200',
     "provinceName": '河北',
     "city": [{
@@ -187,6 +201,8 @@
       "zoon": []
     }]
   },{
+    "orderLetter": 'G',
+    "showOrder": true,
     "provinceId": '800200',
     "provinceName": '广东',
     "city": [{
@@ -195,6 +211,8 @@
       "zoon": []
     }]
   },{
+    "orderLetter": 'H',
+    "showOrder": false,
     "provinceId": '900200',
     "provinceName": '湖南',
     "city": [{
@@ -203,6 +221,8 @@
       "zoon": []
     }]
   },{
+    "orderLetter": 'S',
+    "showOrder": false,
     "provinceId": '110200',
     "provinceName": '四川',
     "city": [{
@@ -211,6 +231,8 @@
       "zoon": []
     }]
   },{
+    "orderLetter": 'G',
+    "showOrder": true,
     "provinceId": '120200',
     "provinceName": '甘肃',
     "city": [{
@@ -219,6 +241,8 @@
       "zoon": []
     }]
   },{
+    "orderLetter": 'G',
+    "showOrder": false,
     "provinceId": '130200',
     "provinceName": '广西',
     "city": [{
@@ -227,6 +251,8 @@
       "zoon": []
     }]
   },{
+    "orderLetter": 'X',
+    "showOrder": true,
     "provinceId": '140200',
     "provinceName": '新疆',
     "city": [{
@@ -235,6 +261,8 @@
       "zoon": []
     }]
   },{
+    "orderLetter": 'N',
+    "showOrder": true,
     "provinceId": '150200',
     "provinceName": '内蒙',
     "city": [{
@@ -243,6 +271,8 @@
       "zoon": []
     }]
   },{
+    "orderLetter": 'H',
+    "showOrder": false,
     "provinceId": '160200',
     "provinceName": '河南',
     "city": [{
@@ -251,6 +281,8 @@
       "zoon": []
     }]
   },{
+    "orderLetter": 'N',
+    "showOrder": false,
     "provinceId": '170200',
     "provinceName": '南海',
     "city": [{
@@ -259,6 +291,8 @@
       "zoon": []
     }]
   },{
+    "orderLetter": 'J',
+    "showOrder": true,
     "provinceId": '180200',
     "provinceName": '江苏',
     "city": [{
@@ -266,20 +300,32 @@
       "cityName": '江苏市',
       "zoon": []
     }]
+  },{
+    "orderLetter": 'H',
+    "showOrder": true,
+    "provinceId": '18020220',
+    "provinceName": '海外',
+    "city": [{
+      "cityId": '18020122',
+      "cityName": '美国',
+      "zoon": []
+    }]
   }];
-  address_Plugin = $('#addressPlugin').addressPlugin({
-    datas: addrDatas,  // 数据源
-    title: '出生地',
-    // titlePos: 'left',
-    showColumn: 2,
-    callback: function (result) {
-      console.log(result);
-      $('#address').val(result.name)
-    }
-  })
+ 
 
   $('#address').on('click', function () {
-    address_Plugin.openModule($('#address').val())
+	var  address_Plugin = $('#addressPlugin').addressPlugin({
+		datas: addrDatas,  // 数据源
+		title: '出生地',
+		titlePos: 'left',
+		showColumn: 2,
+		defaultValue: $('#address').val(),
+		callback: function (result) {
+		  console.log(result);
+		  $('#address').val(result.name)
+		}
+	  })
+    address_Plugin.openModule();
   })
 
   $('#changeText').on('click', function() {
