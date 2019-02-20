@@ -49,7 +49,6 @@
     this.init();
 
     this.openModule = function () {
-
       $('#addressModule').css('display', 'block');
       $('#addressList').removeClass('ap-pop-out').addClass('ap-pop-in');
     };
@@ -108,8 +107,6 @@
         var addrArr = _that.opts.defaultValue.split('-');
         _that.resetChoosedInfo(addrArr);
       }
-
-      // _that.refreshCurrentView(_that.opts.datas, 'province', _that.apProvinceTitleObj);
     },
 
     initTitleAndListObj: function () {
@@ -248,14 +245,6 @@
       }
     },
 
-    rebackPCZObj: function () {
-      this.provinceObj = this.finalProvince;
-      this.cityObj = this.finalCity;
-      this.zoonObj = this.finalZoon;
-      this.cityList = this.finalCityList;
-      this.zoonList = this.finalZoonList;
-    },
-
     closeModule: function () {
       // 动画
       $('#addressList').addClass('ap-pop-out').removeClass('ap-pop-in');
@@ -263,7 +252,7 @@
           $('#addressModule').css('display', 'none');
         }, ANIMATION_OUT);
 
-      this.rebackPCZObj();
+      $('#addressModule').remove();
     },
 
     // 列表项状态还原
@@ -334,7 +323,6 @@
 
     // 绘制城市列表
     rePaintDom: function (list, kind) {
-      console.log(kind);
       if (!list || list.length == 0 || !kind) {
         return;
       }
