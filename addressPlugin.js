@@ -48,11 +48,6 @@
     apPCZListObj = null;
 
     this.init();
-
-    this.openModule = function () {
-      $('#addressModule').css('display', 'block');
-      $('#addressList').removeClass('ap-pop-out').addClass('ap-pop-in');
-    };
   }
 
   AddressPlugin.prototype = {
@@ -108,6 +103,8 @@
         var addrArr = _that.opts.defaultValue.split('-');
         _that.resetChoosedInfo(addrArr);
       }
+
+      $('#addressList').removeClass('ap-pop-out').addClass('ap-pop-in');
     },
 
     initTitleAndListObj: function () {
@@ -609,20 +606,20 @@
           _targetContaier.children().eq(1).removeClass('ap-unvisible');
 
       // 当列表项数目大于页面允许显示的数目时，允许滚动
-      if  (listSize > MAX_SHOW_ITEMNUM) {
-        if (_itemIndex < MAX_SHOW_ITEMNUM) {
-          if (_itemIndex <= listSize - MAX_SHOW_ITEMNUM) {
-            this.apPCZListObj.scrollTop( (_itemIndex-1) * ITEM_HEIGHT);
-          } else {
-            this.apPCZListObj.scrollTop((listSize - MAX_SHOW_ITEMNUM) * ITEM_HEIGHT);
-          }
+
+      var totlePages = Math.floor(listSize / MAX_SHOW_ITEMNUM),
+          totleExtra = listSize % MAX_SHOW_ITEMNUM,
+          curExtra  = _itemIndex % MAX_SHOW_ITEMNUM,
+          curPage = Math.floor(_itemIndex / MAX_SHOW_ITEMNUM);
+      if (totlePages > 0) {
+        if (totleExtra == 0) {
+          // 说明刚好一页
+          return;
         } else {
-          if (listSize - _itemIndex > MAX_SHOW_ITEMNUM -1) {
-            // 当出现列表数大于2*MAX_SHOW_ITEMNUM时
-            this.apPCZListObj.scrollTop(MAX_SHOW_ITEMNUM * parseInt(listSize / MAX_SHOW_ITEMNUM) * ITEM_HEIGHT);
-          } else {
-            // MAX_SHOW_ITEMNUM <当出现列表数 < 2*MAX_SHOW_ITEMNUM时
-            this.apPCZListObj.scrollTop( MAX_SHOW_ITEMNUM * ITEM_HEIGHT);
+          if (curExtra <= totleExtra) {
+            this.apPCZListObj.scrollTop( curPage * MAX_SHOW_ITEMNUM * ITEM_HEIGHT + (curExtra - 1) * ITEM_HEIGHT);
+          } else if (curExtra > totleExtra) {
+            this.apPCZListObj.scrollTop( curPage * MAX_SHOW_ITEMNUM * ITEM_HEIGHT + totleExtra * ITEM_HEIGHT);
           }
         }
       }
