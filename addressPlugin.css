@@ -106,6 +106,7 @@
 
 .ap-choose-pcz {
   display:inline-block;
+  max-width: 8.4375rem;
   margin-left: 10px;
   padding: 0 5px;
   text-align: center;

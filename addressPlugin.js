@@ -619,7 +619,11 @@
           if (curExtra <= totleExtra) {
             this.apPCZListObj.scrollTop( curPage * MAX_SHOW_ITEMNUM * ITEM_HEIGHT + (curExtra - 1) * ITEM_HEIGHT);
           } else if (curExtra > totleExtra) {
-            this.apPCZListObj.scrollTop( curPage * MAX_SHOW_ITEMNUM * ITEM_HEIGHT + totleExtra * ITEM_HEIGHT);
+            if (listSize - _itemIndex -1 >= MAX_SHOW_ITEMNUM) {
+              this.apPCZListObj.scrollTop( curPage * MAX_SHOW_ITEMNUM * ITEM_HEIGHT + (curExtra - 1) * ITEM_HEIGHT);
+            } else {
+              this.apPCZListObj.scrollTop( curPage * MAX_SHOW_ITEMNUM * ITEM_HEIGHT + totleExtra * ITEM_HEIGHT);
+            }
           }
         }
       }
