@@ -111,6 +111,9 @@
   padding: 0 5px;
   text-align: center;
   color: #000;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .ap-box-shaw {
