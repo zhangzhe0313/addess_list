@@ -534,7 +534,7 @@
         _that.apCityTitleObj.attr('data-city',  _that.cityObj.code);
         // 获取对应的区县列表
         _that.zoonList = _that.cityObj.children;
-        if ((_that.zoonList && _that.zoonList.length == 0) || _that.opts.showColumn == 2) {
+        if (!_that.zoonList || _that.zoonList.length == 0 || _that.opts.showColumn == 2) {
           // 保存省市县
           _that.setPCZData(_that.provinceObj, _that.cityObj, {}, _that.cityList, []);
 
